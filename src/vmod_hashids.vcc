@@ -1,0 +1,26 @@
+$Module hashids 3 https://hashids.org/
+
+DESCRIPTION
+===========
+
+This module implements hashid encoding and decoding.
+
+* https://hashids.org/
+
+Functions
+=========
+
+``hashids.encode(salt, number)`` returns a hashid for ``number`` salted with ``salt``.
+
+``hashids.decode(salt, hashid)`` returns the decoded number for ``hashid`` salted with ``salt``.
+
+Example
+=======
+
+``set resp.http.Test-Encode = hashids.encode("testsalt", 987654321012345678);``
+
+``set resp.http.Test-Decode = hashids.decode("testsalt", resp.http.Test-Encode);``
+
+$Function STRING encode(STRING salt, INT number)
+$Function INT decode(STRING salt, STRING number)
+
