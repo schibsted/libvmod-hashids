@@ -18,15 +18,12 @@ VCL_STRING vmod_encode(VRT_CTX, VCL_STRING salt, VCL_INT number) {
   CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
   WS_Assert(ctx->ws);
 
-  if (salt == NULL) {
-    return NULL;
-  }
+  AN(salt);
   
   hashids = hashids_init(salt);
   if (hashids == NULL) {
     return NULL;
   }
-
 
   buf_size = hashids_estimate_encoded_size(hashids, 1, (ull_t*)&number);
   if (buf_size == 0 || buf_size > HASH_MAX_SIZE) {
