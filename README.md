@@ -19,9 +19,6 @@ hashids.encode("testsalt", 987654321012345678);`
 `set resp.http.Test-Decode = hashids.decode("testsalt",
 resp.http.Test-Encode);`
 
-$Function STRING encode(STRING salt, INT number) $Function INT
-decode(STRING salt, STRING number)
-
 # INSTALLATION
 
 The source tree is based on autotools to configure the building, and
