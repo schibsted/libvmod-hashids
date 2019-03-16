@@ -73,6 +73,7 @@ VCL_INT vmod_decode(VRT_CTX, VCL_STRING salt, VCL_STRING hash) {
   if (buf != NULL) {
     buf[len] = '\0';
   } else {
+    hashids_free(hashids);
     return ERROR_BUFFER_ALLOC;
   }
 
