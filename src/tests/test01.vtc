@@ -1,14 +1,14 @@
 varnishtest "Test hashids vmod"
 
 server s1 {
-       rxreq
-       txresp
+  rxreq
+  txresp
 } -start
 
 varnish v1 -vcl+backend {
-	import ${vmod_hashids};
+  import ${vmod_hashids};
 
-	sub vcl_deliver {
+  sub vcl_deliver {
     set resp.http.X-Encode-Test-01 = hashids.encode("this is my salt", 31337);
     set resp.http.X-Decode-Test-01 = hashids.decode("this is my salt", "WDl1");
 
@@ -20,12 +20,12 @@ varnish v1 -vcl+backend {
 
     // ERROR_MAX_SIZE_OVERFLOW (when HASH_MAX_SIZE == 64)
     set resp.http.X-Decode-Test-04 = hashids.decode("salt", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-	}
+  }
 } -start
 
 client c1 {
-	txreq -url "/"
-	rxresp
+  txreq -url "/"
+  rxresp
 
   expect resp.http.X-Encode-Test-01 == "WDl1"
 
