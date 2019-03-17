@@ -1,4 +1,4 @@
-$Module hashids 3 https://hashids.org/
+$Module hashids Varnish Hashids module
 
 DESCRIPTION
 ===========

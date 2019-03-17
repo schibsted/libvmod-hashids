@@ -1,15 +1,29 @@
-#include "config.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "config.h"
 #include "cache/cache.h"
-
 #include "vtim.h"
 #include "vrt.h"
 #include "vcc_hashids_if.h"
-#include "vmod_hashids.h"
+#include "hashids.h"
 
+/* Max size of hash we will allow to decode. */
+#define HASH_MAX_SIZE 64
+
+/* Returned error codes. */
+enum HASHIDS_ERROR_CODES {
+  ERROR_EMPTY_HASH             = -1,
+  ERROR_MAX_SIZE_OVERFLOW      = -2,
+  ERROR_BUFFER_ALLOC           = -3,
+  ERROR_ZERO_ELEMENTS_RETURNED = -4,
+  ERROR_INVALID_HASH           = -5,
+  ERROR_HASHID_INIT            = -6
+};
+
+typedef unsigned long long ull_t;
+
+/* Encode function. */
 VCL_STRING vmod_encode(VRT_CTX, VCL_STRING salt, VCL_INT number) {
   char *buf;
   hashids_t *hashids;
@@ -44,6 +58,7 @@ VCL_STRING vmod_encode(VRT_CTX, VCL_STRING salt, VCL_INT number) {
   return buf;
 }
 
+/* Decode function. */
 VCL_INT vmod_decode(VRT_CTX, VCL_STRING salt, VCL_STRING hash) {
   ull_t number;
   size_t len, n_encode, n_decode;
@@ -78,6 +93,10 @@ VCL_INT vmod_decode(VRT_CTX, VCL_STRING salt, VCL_STRING hash) {
   }
 
   n_decode = hashids_decode(hashids, buf, &number, 1);
+
+  /* We reencode the string and compare the returned hash with the input hash
+     so we can validate the hash and salt combination.
+  */
   n_encode = hashids_encode(hashids, buf, 1, &number);
 
   hashids_free(hashids);

@@ -1,8 +1,7 @@
-# DESCRIPTION
+# vmod-hashids
 
-This module implements hashid encoding and decoding.
-
-  - https://hashids.org/
+This module makes hashids encoding and decoding available in VCL.
+See https://hashids.org/ for details about the hashids library.
 
 # Functions
 
@@ -12,14 +11,38 @@ This module implements hashid encoding and decoding.
 `hashids.decode(salt, hashid)` returns the decoded number for `hashid`
 salted with `salt`.
 
+# Errors
+
+```hashids.decode()``` will return negative numbers between -1 and -6 if an error occurs during decoding.
+
+The table below shows the meaning of the returned error codes:
+
+| Error code | Description                                                    |
+|------------|----------------------------------------------------------------|
+| -1         | Input hash is empty.                                           |
+| -2         | Input hash is larger than max allowed size (default: 64 bytes) |
+| -3         | Memory allocation error.                                       |
+| -4         | No numbers was returned.                                       |
+| -5         | Invalid hash / salt mismatch.                                  |
+| -6         | Hashid library initialization failed.                          |
+
+```hashids.encode()``` will return an empty string if an error occurs.
+
 # Example
 
-`set resp.http.Test-Encode =
-hashids.encode("testsalt", 987654321012345678);`
-`set resp.http.Test-Decode = hashids.decode("testsalt",
-resp.http.Test-Encode);`
+```
+import hashids;
 
-# INSTALLATION
+sub vcl_deliver {
+  # Encodes 1234
+  set resp.http.Encoded-Hash = hashids.encode("mysalt", 1234);
+
+  # Decodes resp.http.Encoded-Hash
+  set resp.http.Decoded-Hash = hashids.decode("mysalt", resp.http.Encoded-Hash);
+}
+```
+
+# Installation
 
 The source tree is based on autotools to configure the building, and
 does also have the necessary bits in place to do functional unit tests
@@ -50,13 +73,6 @@ Make targets:
 
   - make - builds the vmod.
   - make install - installs your vmod.
-  - make check - runs the unit tests in `src/tests/*.vtc`.
-  - make distcheck - run check and prepare a tarball of the vmod.
-
-If you build a dist tarball, you don’t need any of the autotools or
-pkg-config. You can build the module simply by running::
-
-./configure make
 
 ## Installation directories
 
@@ -64,23 +80,7 @@ By default, the vmod `configure` script installs the built vmod in the
 directory relevant to the prefix. The vmod installation directory can be
 overridden by passing the `vmoddir` variable to `make install`.
 
-# USAGE
-
-In your VCL you could then use this vmod along the following lines::
-
-```
-import hashids;
-
-sub vcl_deliver {
-  # Encodes 1234
-  set resp.http.Encoded-Hash = hashids.encode("mysalt", 1234);
-  
-  # Decodes resp.http.Encoded-Hash
-  set resp.http.Decoded-Hash = hashids.decode("mysalt", resp.http.Encoded-Hash);
-}
-```
-
-# COMMON PROBLEMS
+# Common problems
 
   - configure: error: Need varnish.m4 – see README.rst
     
