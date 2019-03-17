@@ -51,7 +51,7 @@ using the `varnishtest` tool.
 Building requires the Varnish header files and uses pkg-config to find
 the necessary paths.
 
-Usage::
+**Usage**
 
 ./autogen.sh ./configure
 
@@ -60,16 +60,16 @@ If you have installed Varnish to a non-standard directory, call
 appropriate path. For instance, when varnishd configure was called with
 `--prefix=$PREFIX`, use
 
-::
-
-export
-PKG\_CONFIG\_PATH=\({PREFIX}/lib/pkgconfig  export ACLOCAL_PATH=\){PREFIX}/share/aclocal
+```shell
+export PKG_CONFIG_PATH=({PREFIX}/lib/pkgconfig
+export ACLOCAL_PATH={PREFIX}/share/aclocal
+```
 
 The module will inherit its prefix from Varnish, unless you specify a
 different `--prefix` when running the `configure` script for this
 module.
 
-Make targets:
+**Make targets:**
 
   - make - builds the vmod.
   - make install - installs your vmod.

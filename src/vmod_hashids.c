@@ -94,7 +94,7 @@ VCL_INT vmod_decode(VRT_CTX, VCL_STRING salt, VCL_STRING hash) {
 
   n_decode = hashids_decode(hashids, buf, &number, 1);
 
-  /* We reencode the string and compare the returned hash with the input hash
+  /* We reencode the decoded number and compare the returned hash with the input hash
      so we can validate the hash and salt combination.
   */
   n_encode = hashids_encode(hashids, buf, 1, &number);
