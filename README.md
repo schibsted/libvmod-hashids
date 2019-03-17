@@ -73,6 +73,8 @@ Make targets:
 
   - make - builds the vmod.
   - make install - installs your vmod.
+  - make check - runs the unit tests in src/tests/*.vtc.
+  - make distcheck - run check and prepare a tarball of the vmod.
 
 ## Installation directories
 
