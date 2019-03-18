@@ -31,7 +31,6 @@ VCL_STRING vmod_encode(VRT_CTX, VCL_STRING salt, VCL_INT number) {
 
   CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
   WS_Assert(ctx->ws);
-
   AN(salt);
   
   hashids = hashids_init(salt);
@@ -64,15 +63,13 @@ VCL_STRING vmod_encode(VRT_CTX, VCL_STRING salt, VCL_INT number) {
 /* Decode function. */
 VCL_INT vmod_decode(VRT_CTX, VCL_STRING salt, VCL_STRING hash) {
   ull_t number;
-  size_t len, est_encode_len, n_encode, n_decode;
+  size_t len, n_encode, n_decode;
   hashids_t *hashids;
-  char *p;
-  unsigned b;
+  char buf[HASH_MAX_SIZE];
 
   CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
-  WS_Assert(ctx->ws);
-
   AN(salt);
+  AN(hash);
 
   len = strlen(hash);
   if (len == 0) {
@@ -88,20 +85,11 @@ VCL_INT vmod_decode(VRT_CTX, VCL_STRING salt, VCL_STRING hash) {
     return ERROR_HASHID_INIT;
   }
 
-  b = WS_Reserve(ctx->ws, HASH_MAX_SIZE);
-  if (b < len+1) {
-    WS_Release(ctx->ws, 0);
-    hashids_free(hashids);
-    return ERROR_BUFFER_ALLOC;
-  }
+  memcpy(buf, hash, len);
+  buf[len] = '\0';
 
-  p = ctx->ws->f;
-  memcpy(p, hash, len);
-  p[len] = '\0';
-
-  n_decode = hashids_decode(hashids, p, &number, 1);
+  n_decode = hashids_decode(hashids, buf, &number, 1);
   if (n_decode == 0) {
-    WS_Release(ctx->ws, 0);
     hashids_free(hashids);
     return ERROR_ZERO_ELEMENTS_RETURNED;
   }
@@ -109,27 +97,22 @@ VCL_INT vmod_decode(VRT_CTX, VCL_STRING salt, VCL_STRING hash) {
   /* We reencode the decoded number and compare the returned hash with the input hash
      so we can validate the hash and salt combination.
   */
-  est_encode_len = hashids_estimate_encoded_size(hashids, 1, &number);
-  if (b < est_encode_len) {
-    WS_Release(ctx->ws, 0);
+  if (hashids_estimate_encoded_size(hashids, 1, &number) > HASH_MAX_SIZE) {
     hashids_free(hashids);
     return ERROR_MAX_SIZE_OVERFLOW;
   }
 
-  n_encode = hashids_encode(hashids, p, 1, &number);
+  n_encode = hashids_encode(hashids, buf, 1, &number);
   if (n_encode == 0) {
-    WS_Release(ctx->ws, 0);
     hashids_free(hashids);
     return ERROR_ZERO_ELEMENTS_RETURNED;
   }
 
   hashids_free(hashids);
 
-  if (strncmp(hash, p, len) != 0) {
-    WS_Release(ctx->ws, 0);
+  if (strncmp(hash, buf, len) != 0) {
     return ERROR_INVALID_HASH;
   }
 
-  WS_Release(ctx->ws, 0);
   return number;
 }
