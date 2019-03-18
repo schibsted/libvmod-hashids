@@ -5,6 +5,7 @@ vmod_LTLIBRARIES = libvmod_hashids.la
 
 libvmod_hashids_la_SOURCES = \
   hashids.c \
+  hashids.h \
 	vmod_hashids.c
 
 nodist_libvmod_hashids_la_SOURCES = \

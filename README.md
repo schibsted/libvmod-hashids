@@ -53,7 +53,10 @@ the necessary paths.
 
 **Usage**
 
-./autogen.sh ./configure
+```shell
+./autogen.sh
+./configure
+```
 
 If you have installed Varnish to a non-standard directory, call
 `autogen.sh` and `configure` with `PKG_CONFIG_PATH` pointing to the
@@ -81,16 +84,3 @@ module.
 By default, the vmod `configure` script installs the built vmod in the
 directory relevant to the prefix. The vmod installation directory can be
 overridden by passing the `vmoddir` variable to `make install`.
-
-# Common problems
-
-  - configure: error: Need varnish.m4 – see README.rst
-    
-    Check whether `PKG_CONFIG_PATH` and `ACLOCAL_PATH` were set
-    correctly before calling `autogen.sh` and `configure`
-
-  - Incompatibilities with different Varnish Cache versions
-    
-    Make sure you build this vmod against its correspondent Varnish
-    Cache version. For instance, to build against Varnish Cache 4.1,
-    this vmod must be built from branch 4.1.
