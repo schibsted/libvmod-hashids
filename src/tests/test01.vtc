@@ -30,7 +30,7 @@ client c1 {
   expect resp.http.X-Encode-Test-01 == "WDl1"
 
   expect resp.http.X-Decode-Test-01 == "31337"
-  expect resp.http.X-Decode-Test-02 == "-5"
+  expect resp.http.X-Decode-Test-02 == "-4"
   expect resp.http.X-Decode-Test-03 == "-1"
   expect resp.http.X-Decode-Test-04 == "-2"
 }

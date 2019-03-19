@@ -21,10 +21,9 @@ The table below shows the meaning of the returned error codes:
 |------------|----------------------------------------------------------------|
 | -1         | Input hash is empty.                                           |
 | -2         | Input hash is larger than max allowed size (default: 64 bytes) |
-| -3         | Memory allocation error.                                       |
-| -4         | No numbers was returned.                                       |
-| -5         | Invalid hash / salt mismatch.                                  |
-| -6         | Hashid library initialization failed.                          |
+| -3         | No numbers was returned.                                       |
+| -4         | Invalid hash / salt mismatch.                                  |
+| -5         | Hashids library initialization failed.                         |
 
 ```hashids.encode()``` will return an empty string if an error occurs.
 
