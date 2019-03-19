@@ -13,7 +13,7 @@ salted with `salt`.
 
 # Errors
 
-```hashids.decode()``` will return negative numbers between -1 and -6 if an error occurs during decoding.
+```hashids.decode()``` will return negative numbers between -1 and -5 if an error occurs during decoding.
 
 The table below shows the meaning of the returned error codes:
 
