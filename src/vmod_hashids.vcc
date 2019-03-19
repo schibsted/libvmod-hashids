@@ -1,9 +1,9 @@
-$Module hashids Varnish Hashids module
+$Module hashids 3 "Varnish Hashids module"
 
 DESCRIPTION
 ===========
 
-This module implements hashid encoding and decoding.
+This module implements Hashids encoding and decoding.
 
 * https://hashids.org/
 

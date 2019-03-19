@@ -1,6 +1,6 @@
 Summary: Hashids support for varnish
 Name: vmod-hashids
-Version: 0.1
+Version: 0.2
 Release: 1%{?dist}
 License: BSD
 Group: System Environment/Daemons
@@ -35,5 +35,8 @@ rm -rf %{buildroot}
 %{_mandir}/man?/*
 
 %changelog
+* Tue Mar 19 2019 Ole Fredrik Skudsvik <ole.fredrik.skudsvik@schibsted.com>
+- 0.2.0 Small changes to memory handling and support for Varnish 6.
+
 * Mon Mar 18 2019 Ole Fredrik Skudsvik <ole.fredrik.skudsvik@schibsted.com>
 - 0.1.0 First release

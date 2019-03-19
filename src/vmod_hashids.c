@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 #include "cache/cache.h"
-#include "vtim.h"
+
+#ifndef VRT_H_INCLUDED
 #include "vrt.h"
+#endif
+
 #include "vcc_hashids_if.h"
 #include "hashids.h"
 

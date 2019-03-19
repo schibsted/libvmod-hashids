@@ -1,6 +1,6 @@
 # vmod-hashids
 
-This module makes hashids encoding and decoding available in VCL.
+This module makes Hashids encoding and decoding available in VCL.
 See https://hashids.org/ for details about the hashids library.
 
 # Functions
@@ -83,3 +83,7 @@ module.
 By default, the vmod `configure` script installs the built vmod in the
 directory relevant to the prefix. The vmod installation directory can be
 overridden by passing the `vmoddir` variable to `make install`.
+
+## Supported Varnish versions
+
+At the time of writing the module is verified working with the latest releases of Varnish 4, 5 and 6.
